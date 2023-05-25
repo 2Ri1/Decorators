@@ -13,9 +13,7 @@ def logger(old_function):
     @wraps(old_function)  # wraps подменяет метаданные функции
     def new_function(*args, **kwargs):
         l = old_function.__name__
-        # print(f'Вызываем {some_function.__name__} c аргументами {args} и {kwargs}')
         result = old_function(*args, **kwargs)
-        # print(f'Вернули результат {result}')
         start = datetime.datetime.now()
         with open('main.log', 'a', encoding='utf-8') as f:
             f.write(f'\nВызываем {l} c аргументами {args} и {kwargs}. \nВернули результат {result}\nДата и время {start}\n')
@@ -59,7 +57,3 @@ def test_1():
     assert 'summator' in log_file_content, 'должно записаться имя функции'
     for item in (4.3, 2.2, 6.5):
         assert str(item) in log_file_content, f'{item} должен быть записан в файл'
-
-
-# if __name__ == '__main__':
-#     test_1()

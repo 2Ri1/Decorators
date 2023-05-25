@@ -5,14 +5,22 @@
 # отработать без ошибок.
 
 import os
+import datetime
 
+from functools import wraps
 
 def logger(path):
-    ...
-    
+
     def __logger(old_function):
+        @wraps(old_function)
         def new_function(*args, **kwargs):
-            ...
+            l = old_function.__name__
+            result = old_function(*args, **kwargs)
+            start = datetime.datetime.now()
+            with open(path, 'a', encoding='utf-8') as f:
+                path_ = os.path.abspath(path)
+                f.write(f'\nВызываем {l} c аргументами {args} и {kwargs}. \nВернули результат {result}\nДата и время {start}\n Путь {path_}\n')
+            return result
 
         return new_function
 
@@ -57,7 +65,3 @@ def test_2():
 
         for item in (4.3, 2.2, 6.5):
             assert str(item) in log_file_content, f'{item} должен быть записан в файл'
-
-
-# if __name__ == '__main__':
-#     test_2()
